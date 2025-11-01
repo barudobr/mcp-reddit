@@ -1,245 +1,61 @@
 # Reddit MCP Actor
 
-Integrace Reddit sociální platformy s Model Context Protocol (MCP) pro snadný přístup AI agentů k datům z Redditu.
+Integration of Reddit's social media platform with Model Context Protocol for AI agent access to Reddit data.
 
-## 📋 Co tento projekt dělá
+## Overview
 
-Tento Actor propojuje Reddit API s MCP protokolem, což umožňuje AI aplikacím:
-- 📝 Získávat příspěvky ze subredditů
-- 🔍 Vyhledávat na Redditu
-- 💬 Analyzovat komentáře
-- 📊 Sledovat trendy a sentiment
-- 👤 Získávat informace o uživatelích a komunitách
+This Actor connects Reddit API with MCP protocol, enabling AI applications to retrieve posts from subreddits, search Reddit content, analyze comments, track trends and sentiment, and access user and community information.
 
-## 🚀 Rychlý start
+## Quick Start
 
-### 1. Instalace závislostí
+Install dependencies with pip install -r requirements.txt. Configure Reddit API by logging in to Reddit, navigating to https://www.reddit.com/prefs/apps, clicking create application, filling in name as reddit-mcp-actor, selecting script as app type, and using http://localhost:8080 as redirect uri. Copy your client_id and client_secret.
 
-```bash
-pip install -r requirements.txt
-```
+Create .env file by copying .env.template and editing it with your credentials: REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, and REDDIT_USER_AGENT set to reddit-mcp-actor/1.0.
 
-### 2. Konfigurace Reddit API
+Test connection with python test_reddit_connection.py, run tests with python test_mcp_server.py, and start MCP server with python reddit_mcp_server.py.
 
-1. Přihlaste se na [Reddit](https://reddit.com)
-2. Jděte na https://www.reddit.com/prefs/apps
-3. Klikněte na "create application" nebo "create another app"
-4. Vyplňte:
-   - **name:** `reddit-mcp-actor`
-   - **App type:** Zaškrtněte **"script"**
-   - **redirect uri:** `http://localhost:8080`
-5. Zkopírujte `client_id` a `client_secret`
+## Available Tools
 
-### 3. Vytvoření .env souboru
+The get_subreddit_posts function retrieves posts from a subreddit with parameters subreddit_name (required), limit (optional, default 10), and sort_by (optional: hot, new, top, rising).
 
-```bash
-# Zkopírujte šablonu
-cp .env.template .env
+The search_reddit function searches Reddit for posts with parameters query (required), subreddit_name (optional), limit (optional, default 10), and sort_by (optional: relevance, hot, top, new).
 
-# Vyplňte své hodnoty v .env:
-REDDIT_CLIENT_ID=your_client_id_here
-REDDIT_CLIENT_SECRET=your_client_secret_here
-REDDIT_USER_AGENT=reddit-mcp-actor/1.0
-```
+The get_post_comments function retrieves comments for a post with parameters post_id (required) and limit (optional).
 
-### 4. Test připojení
+The get_subreddit_info function retrieves subreddit information with parameter subreddit_name (required).
 
-```bash
-python test_reddit_connection.py
-```
+The get_user_info function retrieves user information with parameter username (required).
 
-### 5. Test MCP serveru
+The analyze_posts_sentiment function analyzes sentiment of posts with parameters subreddit_name (optional), search_query (optional), and limit (optional, default 50).
 
-```bash
-python test_mcp_server.py
-```
+## Project Structure
 
-### 6. Spuštění MCP serveru
+The project includes reddit_mcp_server.py as the main MCP server, reddit_tools.py for Reddit API functions, config.py for configuration, test_reddit_connection.py for connection testing, test_mcp_server.py for server testing, requirements.txt for Python dependencies, .env for credentials (not committed), .env.template as template, .gitignore for git rules, and README.md for documentation.
 
-```bash
-python reddit_mcp_server.py
-```
+## Security
 
-## 🔧 Dostupné nástroje (MCP Tools)
+Never upload .env file to GitHub. The .gitignore file automatically excludes .env file. Keep API keys confidential at all times.
 
-### 1. `get_subreddit_posts`
-Získá příspěvky ze subredditu.
+## Troubleshooting
 
-**Parametry:**
-- `subreddit_name` (povinný): Název subredditu
-- `limit` (nepovinný): Počet příspěvků (default: 10)
-- `sort_by` (nepovinný): Řazení - "hot", "new", "top", "rising"
+For ModuleNotFoundError run pip install -r requirements.txt. For REDDIT_CLIENT_ID not set error verify .env file is properly configured. For 401 Unauthorized check client_id and client_secret are correct. For 403 Forbidden wait as Reddit may be rate limiting requests.
 
-**Příklad:**
-```json
-{
-  "subreddit_name": "python",
-  "limit": 10,
-  "sort_by": "hot"
-}
-```
+## Technology Stack
 
-### 2. `search_reddit`
-Vyhledá příspěvky na Redditu.
+Built with Python 3.8+, PRAW Python Reddit API Wrapper, MCP Model Context Protocol, and python-dotenv for environment variable management.
 
-**Parametry:**
-- `query` (povinný): Vyhledávací dotaz
-- `subreddit_name` (nepovinný): Název subredditu
-- `limit` (nepovinný): Počet výsledků (default: 10)
-- `sort_by` (nepovinný): Řazení - "relevance", "hot", "top", "new"
+## Usage with AI Systems
 
-**Příklad:**
-```json
-{
-  "query": "machine learning",
-  "limit": 20,
-  "sort_by": "relevance"
-}
-```
+This MCP server works with any MCP-compatible AI system. Start server with python reddit_mcp_server.py, let AI system connect via MCP protocol, allow AI to call tools like get_subreddit_posts and search_reddit, and receive data in standard MCP format.
 
-### 3. `get_post_comments`
-Získá komentáře k příspěvku.
+## Example Usage
 
-**Parametry:**
-- `post_id` (povinný): ID příspěvku
-- `limit` (nepovinný): Max počet komentářů
+Monitor subreddit with posts equals get_subreddit_posts with parameters python, limit 50, sort_by new. Analyze sentiment with sentiment equals analyze_posts_sentiment with subreddit_name technology and limit 100. Search trends with results equals search_reddit with query artificial intelligence and limit 50.
 
-**Příklad:**
-```json
-{
-  "post_id": "abc123",
-  "limit": 50
-}
-```
+## License
 
-### 4. `get_subreddit_info`
-Získá informace o subredditu.
+This project is open source and available for educational and development purposes.
 
-**Parametry:**
-- `subreddit_name` (povinný): Název subredditu
+## Support
 
-**Příklad:**
-```json
-{
-  "subreddit_name": "python"
-}
-```
-
-### 5. `get_user_info`
-Získá informace o uživateli.
-
-**Parametry:**
-- `username` (povinný): Uživatelské jméno
-
-**Příklad:**
-```json
-{
-  "username": "spez"
-}
-```
-
-### 6. `analyze_posts_sentiment`
-Analyzuje sentiment příspěvků.
-
-**Parametry:**
-- `subreddit_name` (nepovinný): Název subredditu
-- `search_query` (nepovinný): Vyhledávací dotaz
-- `limit` (nepovinný): Počet příspěvků k analýze (default: 50)
-
-**Příklad:**
-```json
-{
-  "subreddit_name": "technology",
-  "limit": 100
-}
-```
-
-## 📁 Struktura projektu
-
-```
-reddit-mcp-actor/
-├── reddit_mcp_server.py      # Hlavní MCP server
-├── reddit_tools.py            # Funkce pro práci s Reditem
-├── config.py                  # Konfigurace
-├── test_reddit_connection.py # Test Reddit připojení
-├── test_mcp_server.py        # Test MCP serveru
-├── requirements.txt           # Python závislosti
-├── .env                       # Přístupové údaje (NECOMMITOVAT!)
-├── .env.template             # Šablona pro .env
-├── .gitignore                # Git ignore pravidla
-└── README.md                 # Tato dokumentace
-```
-
-## 🔐 Bezpečnost
-
-- ⚠️ **NIKDY** nenahrávejte `.env` soubor na GitHub!
-- `.gitignore` automaticky ignoruje `.env` soubor
-- Své API klíče nikdy nesdílejte s nikým
-
-## 🐛 Řešení problémů
-
-### `ModuleNotFoundError: No module named 'dotenv'`
-```bash
-pip install -r requirements.txt
-```
-
-### `REDDIT_CLIENT_ID není nastavené`
-Zkontrolujte, že máte správně vyplněný `.env` soubor.
-
-### `401 Unauthorized`
-Zkontrolujte, že máte správné `client_id` a `client_secret`.
-
-### `403 Forbidden`
-Reddit možná blokuje příliš mnoho požadavků. Počkejte chvíli a zkuste znovu.
-
-## 📚 Použité technologie
-
-- **Python 3.8+**
-- **PRAW** - Python Reddit API Wrapper
-- **MCP** - Model Context Protocol
-- **python-dotenv** - Načítání .env souborů
-
-## 🤝 Jak to používat s AI
-
-Tento MCP server můžete použít s jakýmkoliv MCP-kompatibilním AI systémem:
-
-1. Spusťte server: `python reddit_mcp_server.py`
-2. AI systém se připojí přes MCP protokol
-3. AI může volat nástroje jako `get_subreddit_posts`, `search_reddit` atd.
-4. Server vrací data ve standardním MCP formátu
-
-## 📈 Příklady použití
-
-### Monitoring subredditu
-```python
-# Sledování nových příspěvků v r/python
-posts = get_subreddit_posts("python", limit=50, sort_by="new")
-```
-
-### Analýza sentimentu
-```python
-# Analýza nálady v r/technology
-sentiment = analyze_posts_sentiment(subreddit_name="technology", limit=100)
-```
-
-### Vyhledávání trendů
-```python
-# Hledání diskusí o AI
-results = search_reddit("artificial intelligence", limit=50)
-```
-
-## 📝 Licence
-
-Tento projekt je open source a volně použitelný pro vzdělávací a vývojové účely.
-
-## 🙋 Podpora
-
-Pokud narazíte na problémy, zkontrolujte:
-1. Máte správně nastavený `.env` soubor?
-2. Jsou nainstalované všechny závislosti?
-3. Je aktivované virtuální prostředí?
-4. Funguje připojení k internetu?
-
----
-
-**Vytvořeno v rámci tutoriálu Reddit MCP Integration** 🚀
+If you encounter issues verify .env file is properly configured, all dependencies are installed, virtual environment is activated, and internet connection is working.
