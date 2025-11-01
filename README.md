@@ -10,7 +10,7 @@ This Actor connects Reddit API with MCP protocol, enabling AI applications to re
 
 Install dependencies with pip install -r requirements.txt. Configure Reddit API by logging in to Reddit, navigating to https://www.reddit.com/prefs/apps, clicking create application, filling in name as reddit-mcp-actor, selecting script as app type, and using http://localhost:8080 as redirect uri. Copy your client_id and client_secret.
 
-Create .env file by copying .env.template and editing it with your credentials: REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, and REDDIT_USER_AGENT set to reddit-mcp-actor/1.0.
+Create .env file fill it with your credentials: REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, and REDDIT_USER_AGENT set to reddit-mcp-actor/1.0.
 
 Test connection with python test_reddit_connection.py, run tests with python test_mcp_server.py, and start MCP server with python reddit_mcp_server.py.
 
