@@ -13,7 +13,7 @@ def validate_config():
     if not REDDIT_CLIENT_SECRET:
         raise ValueError("REDDIT_CLIENT_SECRET není nastavené v .env souboru!")
     
-    print("✅ Konfigurace načtena úspěšně!")
+    print(" Configuration was succesfull.")
     print(f"   Client ID: {REDDIT_CLIENT_ID[:8]}...")
     print(f"   User Agent: {REDDIT_USER_AGENT}")
     
