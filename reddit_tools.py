@@ -7,8 +7,6 @@ from config import REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USER_AGENT
 
 
 class RedditTools:
-    """Třída s nástroji pro práci s Redditem"""
-    
     def __init__(self):
         """Inicializace Reddit připojení"""
         self.reddit = praw.Reddit(
@@ -275,16 +273,16 @@ if __name__ == "__main__":
     print("🔧 Inicializuji Reddit Tools...")
     tools = RedditTools()
     
-    print("\n📝 Test: Získávání příspěvků z r/python")
+    print("\n Test: Získávání příspěvků z r/python")
     posts = tools.get_subreddit_posts("python", limit=5)
     if posts and "error" not in posts:
         for i, post in enumerate(posts, 1):
             print(f"{i}. {post['title'][:60]}...")
-            print(f"   👍 {post['score']} | 💬 {post['num_comments']} komentářů")
+            print(f"   {post['score']} | 💬 {post['num_comments']} komentářů")
     
     print("\n📊 Test: Analýza sentimentu")
     sentiment = tools.analyze_sentiment(posts)
     print(f"Průměrné skóre: {sentiment['average_score']:.1f}")
     print(f"Pozitivní: {sentiment['sentiment_percentages']['positive']:.1f}%")
     
-    print("\n✅ Reddit Tools fungují!")
+    print("\n Reddit Tools fungují!")
