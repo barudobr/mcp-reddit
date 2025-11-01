@@ -21,21 +21,10 @@ class RedditTools:
         limit: int = 10,
         sort_by: str = "hot"
     ) -> List[Dict]:
-        """
-        Získá příspěvky ze subredditu
-        
-        Args:
-            subreddit_name: Název subredditu (např. "python")
-            limit: Počet příspěvků k získání (default: 10)
-            sort_by: Způsob řazení - "hot", "new", "top", "rising" (default: "hot")
-        
-        Returns:
-            List[Dict]: Seznam příspěvků s jejich detaily
-        """
+       
         try:
             subreddit = self.reddit.subreddit(subreddit_name)
             
-            # Výběr způsobu řazení
             if sort_by == "hot":
                 posts = subreddit.hot(limit=limit)
             elif sort_by == "new":
@@ -46,8 +35,7 @@ class RedditTools:
                 posts = subreddit.rising(limit=limit)
             else:
                 posts = subreddit.hot(limit=limit)
-            
-            # Zpracování příspěvků
+          
             result = []
             for post in posts:
                 post_data = {
@@ -71,7 +59,7 @@ class RedditTools:
             return result
             
         except Exception as e:
-            return {"error": f"Chyba při získávání příspěvků: {str(e)}"}
+            return {"error": f" Error when entering the posts: {str(e)}"}
     
     def search_reddit(
         self,
@@ -80,28 +68,16 @@ class RedditTools:
         limit: int = 10,
         sort_by: str = "relevance"
     ) -> List[Dict]:
-        """
-        Vyhledá na Redditu
         
-        Args:
-            query: Vyhledávací dotaz
-            subreddit_name: Název subredditu (None = hledat všude)
-            limit: Počet výsledků (default: 10)
-            sort_by: Řazení - "relevance", "hot", "top", "new", "comments" (default: "relevance")
-        
-        Returns:
-            List[Dict]: Seznam nalezených příspěvků
-        """
         try:
             if subreddit_name:
-                # Hledání v konkrétním subredditu
+                
                 subreddit = self.reddit.subreddit(subreddit_name)
                 search_results = subreddit.search(query, limit=limit, sort=sort_by)
             else:
-                # Hledání na celém Redditu
+               
                 search_results = self.reddit.subreddit("all").search(query, limit=limit, sort=sort_by)
             
-            # Zpracování výsledků
             result = []
             for post in search_results:
                 post_data = {
@@ -120,27 +96,17 @@ class RedditTools:
             return result
             
         except Exception as e:
-            return {"error": f"Chyba při vyhledávání: {str(e)}"}
+            return {"error": f"Error when searching: {str(e)}"}
     
     def get_post_comments(
         self,
         post_id: str,
         limit: Optional[int] = None
     ) -> List[Dict]:
-        """
-        Získá komentáře k příspěvku
         
-        Args:
-            post_id: ID příspěvku
-            limit: Maximální počet komentářů (None = všechny)
-        
-        Returns:
-            List[Dict]: Seznam komentářů
-        """
         try:
             submission = self.reddit.submission(id=post_id)
             
-            # Načtení všech komentářů
             submission.comments.replace_more(limit=0)  
             
             result = []
@@ -166,18 +132,10 @@ class RedditTools:
             return result
             
         except Exception as e:
-            return {"error": f"Chyba při získávání komentářů: {str(e)}"}
+            return {"error": f"Comment error: {str(e)}"}
     
     def get_subreddit_info(self, subreddit_name: str) -> Dict:
-        """
-        Získá informace o subredditu
         
-        Args:
-            subreddit_name: Název subredditu
-        
-        Returns:
-            Dict: Informace o subredditu
-        """
         try:
             subreddit = self.reddit.subreddit(subreddit_name)
             
@@ -195,18 +153,10 @@ class RedditTools:
             return info
             
         except Exception as e:
-            return {"error": f"Chyba při získávání info o subredditu: {str(e)}"}
+            return {"error": f"Subreddit error: {str(e)}"}
     
     def get_user_info(self, username: str) -> Dict:
-        """
-        Získá informace o uživateli
         
-        Args:
-            username: Uživatelské jméno
-        
-        Returns:
-            Dict: Informace o uživateli
-        """
         try:
             user = self.reddit.redditor(username)
             
@@ -223,28 +173,18 @@ class RedditTools:
             return info
             
         except Exception as e:
-            return {"error": f"Chyba při získávání info o uživateli: {str(e)}"}
+            return {"error": f"Info user error: {str(e)}"}
     
     def analyze_sentiment(self, posts: List[Dict]) -> Dict:
-        """
-        Jednoduchá analýza sentimentu příspěvků
-        Analyzuje pozitivitu/negativitu na základě score a upvote ratio
         
-        Args:
-            posts: Seznam příspěvků k analýze
-        
-        Returns:
-            Dict: Statistiky sentimentu
-        """
         if not posts or "error" in posts:
-            return {"error": "Žádná data k analýze"}
+            return {"error": "No data"}
         
         total_posts = len(posts)
         total_score = sum(p.get("score", 0) for p in posts)
         total_comments = sum(p.get("num_comments", 0) for p in posts)
         avg_upvote_ratio = sum(p.get("upvote_ratio", 0) for p in posts) / total_posts if total_posts > 0 else 0
         
-        # Klasifikace sentimentu na základě upvote ratio
         positive = sum(1 for p in posts if p.get("upvote_ratio", 0) > 0.7)
         neutral = sum(1 for p in posts if 0.4 <= p.get("upvote_ratio", 0) <= 0.7)
         negative = sum(1 for p in posts if p.get("upvote_ratio", 0) < 0.4)
@@ -270,19 +210,19 @@ class RedditTools:
 
 
 if __name__ == "__main__":
-    print("🔧 Inicializuji Reddit Tools...")
+    print("Reddit Tools")
     tools = RedditTools()
     
-    print("\n Test: Získávání příspěvků z r/python")
+    print("\n Test: Getting posts from r/python")
     posts = tools.get_subreddit_posts("python", limit=5)
     if posts and "error" not in posts:
         for i, post in enumerate(posts, 1):
             print(f"{i}. {post['title'][:60]}...")
             print(f"   {post['score']} | 💬 {post['num_comments']} komentářů")
     
-    print("\n📊 Test: Analýza sentimentu")
+    print("\n Test: Sentiment analysis")
     sentiment = tools.analyze_sentiment(posts)
     print(f"Průměrné skóre: {sentiment['average_score']:.1f}")
     print(f"Pozitivní: {sentiment['sentiment_percentages']['positive']:.1f}%")
     
-    print("\n Reddit Tools fungují!")
+    print("\n Reddit Tools are ready.")
