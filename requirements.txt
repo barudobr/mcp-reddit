@@ -1,0 +1,20 @@
+# Reddit API
+praw==7.7.1
+
+# MCP (Model Context Protocol)
+mcp==1.1.2
+
+# Async support
+asyncio==3.4.3
+
+# Environment variables
+python-dotenv==1.0.0
+
+# HTTP requests (pro web_fetch pokud bude potřeba)
+requests==2.31.0
+
+# JSON handling (už je v Pythonu, ale pro jistotu)
+# json - built-in
+
+# Date/time handling
+python-dateutil==2.8.2
