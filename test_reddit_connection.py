@@ -3,43 +3,40 @@ import praw
 from config import REDDIT_CLIENT_ID, REDDIT_CLIENT_SECRET, REDDIT_USER_AGENT
 
 def test_reddit_connection():
-    """Otestuje připojení k Reddit API"""
+  
     
-    print("🔄 Připojuji se k Reddit API...")
+    print("Connection to Reddit API...")
     
     try:
-        # Vytvoření Reddit instance
+     
         reddit = praw.Reddit(
             client_id=REDDIT_CLIENT_ID,
             client_secret=REDDIT_CLIENT_SECRET,
             user_agent=REDDIT_USER_AGENT
         )
         
-        # Test: Získáme informace o read-only režimu
-        print(f"✅ Připojení úspěšné!")
+        print(f"Succesfull connection")
         print(f"   Read-only mode: {reddit.read_only}")
-        
-        # Test: Získáme pár příspěvků z r/python jako test
-        print("\n🔍 Testuji získání dat...")
+       
+        print("\n Getting data testint")
         subreddit = reddit.subreddit("python")
         print(f"   Subreddit: r/{subreddit.display_name}")
-        print(f"   Počet členů: {subreddit.subscribers:,}")
-        
-        # Získáme 3 top příspěvky jako test
-        print("\n📝 Top 3 příspěvky z r/python:")
+        print(f"   Number of subscribers: {subreddit.subscribers:,}")
+       
+        print("\nTop 3 posts from r/python:")
         for i, post in enumerate(subreddit.hot(limit=3), 1):
             print(f"   {i}. {post.title[:60]}...")
-            print(f"      👍 {post.score} | 💬 {post.num_comments} komentářů")
+            print(f"    {post.score} | 💬 {post.num_comments} comments")
         
-        print("\n✅ Vše funguje perfektně! Můžeme pokračovat.")
+        print("\nEverything works.")
         return True
         
     except Exception as e:
-        print(f"\n❌ Chyba při připojení: {e}")
-        print("\n🔧 Zkontrolujte:")
-        print("   1. Máte správně vyplněný .env soubor?")
-        print("   2. Jsou REDDIT_CLIENT_ID a REDDIT_CLIENT_SECRET správné?")
-        print("   3. Jste připojeni k internetu?")
+        print(f"\nError when connecting: {e}")
+        print("\nCheck:")
+        print("   1. Is the .env file properly configured?")
+        print("   2. Are REDDIT_CLIENT_ID and REDDIT_CLIENT_SECRET correct?")
+        print("   3. Is the internet connection working?")
         return False
 
 if __name__ == "__main__":
